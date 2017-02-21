@@ -28,49 +28,47 @@ jQuery(document).ready(function($){
             event.preventDefault();
             var selectedItem = $(this);
             var socket = io.connect('http://localhost:2046');
-            socket.emit('request', {request: "events"});
+
+            var selectedTab = selectedItem.data('content'),
+                selectedSchedule = tabContentWrapper.find('.cd-schedule');
+
+            socket.emit('request', {request: selectedTab});
+
             socket.on('response', function(event) {
                 if( !selectedItem.hasClass('selected') ) {
-                    // var selectedTab = selectedItem.data('content');
-                        // selectedContent = tabContentWrapper.find('div[data-content="'+selectedTab+'"]'),
-                        // selectedSchedule = selectedContent.find('.cd-schedule');
+                    var eventsContent =tabContentWrapper.find('.events-group');
 
-                    // var eventsContent = selectedContent.find('.events-group');
+                    for (var i=0; i<eventsContent.length; i++) {
+                        var topInfo = eventsContent[i].getElementsByClassName('top-info');
+                        var unOrdered = eventsContent[i].getElementsByTagName('ul')[0];
 
-                    // for (var i=0; i<eventsContent.length; i++) {
-                    //     var topInfo = eventsContent[i].getElementsByClassName('top-info');
-                    //     var unOrdered = eventsContent[i].getElementsByTagName('ul')[0];
-                    //
-                    //     $(unOrdered).empty();
-                    //
-                    //     var listItem = document.createElement('li');
-                    //
-                    //     listItem.setAttribute('class','single-event');
-                    //     listItem.setAttribute('data-start','09:30');
-                    //     listItem.setAttribute('data-end','11:00');
-                    //     listItem.setAttribute('data-content','event-abs-circuit');
-                    //     listItem.setAttribute('data-event','event-1');
-                    //
-                    //     var anchorEvent = document.createElement('a');
-                    //
-                    //     anchorEvent.setAttribute('href','#0');
-                    //
-                    //     var emphasized = document.createElement('em');
-                    //
-                    //     emphasized.setAttribute('class','event-name');
-                    //
-                    //     var eventName = document.createTextNode(event.name);
-                    //
-                    //     emphasized.appendChild(eventName);
-                    //     anchorEvent.appendChild(emphasized);
-                    //     listItem.appendChild(anchorEvent);
-                    //     unOrdered.appendChild(listItem);
-                    // }
+                        $(unOrdered).empty();
 
-                    // new SchedulePlan($(selectedSchedule)).placeEvents();
+                        var listItem = document.createElement('li');
 
-                    // var selectedsubContent = selectedContent.find('div'),
-                    //     selectedContentHeight = selectedContent.find('body').innerHeight();
+                        listItem.setAttribute('class','single-event');
+                        listItem.setAttribute('data-start','09:30');
+                        listItem.setAttribute('data-end','11:00');
+                        listItem.setAttribute('data-content','event-abs-circuit');
+                        listItem.setAttribute('data-event','event-1');
+
+                        var anchorEvent = document.createElement('a');
+
+                        anchorEvent.setAttribute('href','#0');
+
+                        var emphasized = document.createElement('em');
+
+                        emphasized.setAttribute('class','event-name');
+
+                        var eventName = document.createTextNode(event.name);
+
+                        emphasized.appendChild(eventName);
+                        anchorEvent.appendChild(emphasized);
+                        listItem.appendChild(anchorEvent);
+                        unOrdered.appendChild(listItem);
+                    }
+
+                    new SchedulePlan($(selectedSchedule)).placeEvents();
 
                     var selectedContentHeight = tabContentWrapper.find('body').innerHeight();
 
