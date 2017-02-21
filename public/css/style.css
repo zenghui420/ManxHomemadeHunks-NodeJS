@@ -1299,11 +1299,11 @@ xsigin/signup popup
   background: #ffffff;
 }
 
+/*.cd-tabs-content div {*/
+  /*display: none;*/
+  /*padding: 1.4em auto;*/
+/*}*/
 .cd-tabs-content div {
-  display: none;
-  padding: 1.4em auto;
-}
-.cd-tabs-content div.selected {
   display: block;
   -webkit-animation: cd-fade-in 0.5s;
   -moz-animation: cd-fade-in 0.5s;
