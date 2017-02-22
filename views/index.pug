@@ -1,0 +1,287 @@
+//Created by Edmund on 2/22/2017.
+
+doctype html
+html.no-js(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(href='http://fonts.googleapis.com/css?family=PT+Sans:400,700', rel='stylesheet', type='text/css')
+        link(rel='stylesheet', href='/css/reset.css')
+        // CSS reset
+        link(rel='stylesheet', href='/css/style.css')
+        // Gem style
+        script(src='/js/modernizr.js')
+        // Modernizr
+        script(src='/socket.io/socket.io.js')
+        title Log In & Sign Up Form
+    body
+        header(role='banner')
+            #cd-logo
+                a(href='#0')
+                    img(src='public/img/cd-logo.svg', alt='Logo')
+            nav.main-nav
+                ul
+                    // inser more links here
+                    li
+                        a.cd-signin(href='#0') Sign in
+                    li
+                        a.cd-signup(href='#0') Sign up
+        .cd-user-modal
+            // this is the entire modal form, including the background
+            .cd-user-modal-container
+                // this is the container wrapper
+                ul.cd-switcher
+                    li
+                        a(href='#0') Sign in
+                    li
+                        a(href='#0') New account
+                #cd-login
+                    // log in form
+                    form.cd-form
+                        p.fieldset
+                            label.image-replace.cd-email(for='signin-email') E-mail
+                            input#signin-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
+                            span.cd-error-message Error message here!
+                        p.fieldset
+                            label.image-replace.cd-password(for='signin-password') Password
+                            input#signin-password.full-width.has-padding.has-border(type='text', placeholder='Password')
+                            a.hide-password(href='#0') Hide
+                            span.cd-error-message Error message here!
+                        p.fieldset
+                            input#remember-me(type='checkbox', checked='')
+                            label(for='remember-me') Remember me
+                        p.fieldset
+                            input.full-width(type='submit', value='Login')
+                    p.cd-form-bottom-message
+                        a(href='#0') Forgot your password?
+                    // <a href="#0" class="cd-close-form">Close</a>
+                // cd-login
+                #cd-signup
+                    // sign up form
+                    form.cd-form
+                        p.fieldset
+                            label.image-replace.cd-username(for='signup-username') Username
+                            input#signup-username.full-width.has-padding.has-border(type='text', placeholder='Username')
+                            span.cd-error-message Error message here!
+                        p.fieldset
+                            label.image-replace.cd-email(for='signup-email') E-mail
+                            input#signup-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
+                            span.cd-error-message Error message here!
+                        p.fieldset
+                            label.image-replace.cd-password(for='signup-password') Password
+                            input#signup-password.full-width.has-padding.has-border(type='text', placeholder='Password')
+                            a.hide-password(href='#0') Hide
+                            span.cd-error-message Error message here!
+                        p.fieldset
+                            input#accept-terms(type='checkbox')
+                            label(for='accept-terms')
+                                | I agree to the
+                                a(href='#0') Terms
+                        p.fieldset
+                            input.full-width.has-padding(type='submit', value='Create account')
+                    // <a href="#0" class="cd-close-form">Close</a>
+                // cd-signup
+                #cd-reset-password
+                    // reset password form
+                    p.cd-form-message
+                        | Lost your password? Please enter your email address. You will receive a link to create a new password.
+                    form.cd-form
+                        p.fieldset
+                            label.image-replace.cd-email(for='reset-email') E-mail
+                            input#reset-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
+                            span.cd-error-message Error message here!
+                        p.fieldset
+                            input.full-width.has-padding(type='submit', value='Reset password')
+                    p.cd-form-bottom-message
+                        a(href='#0') Back to log-in
+                // cd-reset-password
+                a.cd-close-form(href='#0') Close
+            // cd-user-modal-container
+        // cd-user-modal
+        .cd-tabs
+            nav
+                ul.cd-tabs-navigation
+                    li
+                        a(data-content='inbox', href='#0') Inbox
+                    li
+                        a(data-content='new', href='#0') New
+                    li
+                        a(data-content='gallery', href='#0') Gallery
+                    li
+                        a(data-content='store', href='#0') Store
+                    li
+                        a(data-content='settings', href='#0') Settings
+                    li
+                        a(data-content='trash', href='#0') Trash
+                // cd-tabs-navigation
+            .cd-tabs-content
+                html#cd-schedule-html-inbox
+                    body#cd-schedule-body-inbox
+                        .cd-schedule.loading
+                            .timeline
+                                ul
+                                    li
+                                        span 09:00
+                                    li
+                                        span 09:30
+                                    li
+                                        span 10:00
+                                    li
+                                        span 10:30
+                                    li
+                                        span 11:00
+                                    li
+                                        span 11:30
+                                    li
+                                        span 12:00
+                                    li
+                                        span 12:30
+                                    li
+                                        span 13:00
+                                    li
+                                        span 13:30
+                                    li
+                                        span 14:00
+                                    li
+                                        span 14:30
+                                    li
+                                        span 15:00
+                                    li
+                                        span 15:30
+                                    li
+                                        span 16:00
+                                    li
+                                        span 16:30
+                                    li
+                                        span 17:00
+                                    li
+                                        span 17:30
+                                    li
+                                        span 18:00
+                            // .timeline
+                            .events
+                                ul
+                                    li.events-group
+                                        .top-info
+                                            span Monday
+                                        ul
+                                            // <li class="single-event" data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1">
+                                            // <a href="#0">
+                                            // <em class="event-name">Abs Circuit</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="11:00" data-end="12:30" data-content="event-rowing-workout" data-event="event-2">
+                                            // <a href="#0">
+                                            // <em class="event-name">Rowing Workout</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="14:00" data-end="15:15"  data-content="event-yoga-1" data-event="event-3">
+                                            // <a href="#0">
+                                            // <em class="event-name">Yoga Level 1</em>
+                                            // </a>
+                                            // </li>
+                                    li.events-group
+                                        .top-info
+                                            span Tuesday
+                                        ul
+                                            // <li class="single-event" data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2">
+                                            // <a href="#0">
+                                            // <em class="event-name">Rowing Workout</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="11:30" data-end="13:00"  data-content="event-restorative-yoga" data-event="event-4">
+                                            // <a href="#0">
+                                            // <em class="event-name">Restorative Yoga</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="13:30" data-end="15:00" data-content="event-abs-circuit" data-event="event-1">
+                                            // <a href="#0">
+                                            // <em class="event-name">Abs Circuit</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3">
+                                            // <a href="#0">
+                                            // <em class="event-name">Yoga Level 1</em>
+                                            // </a>
+                                            // </li>
+                                    li.events-group
+                                        .top-info
+                                            span Wednesday
+                                        ul
+                                            // <li class="single-event" data-start="09:00" data-end="10:15" data-content="event-restorative-yoga" data-event="event-4">
+                                            // <a href="#0">
+                                            // <em class="event-name">Restorative Yoga</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="10:45" data-end="11:45" data-content="event-yoga-1" data-event="event-3">
+                                            // <a href="#0">
+                                            // <em class="event-name">Yoga Level 1</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="12:00" data-end="13:45"  data-content="event-rowing-workout" data-event="event-2">
+                                            // <a href="#0">
+                                            // <em class="event-name">Rowing Workout</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="13:45" data-end="15:00" data-content="event-yoga-1" data-event="event-3">
+                                            // <a href="#0">
+                                            // <em class="event-name">Yoga Level 1</em>
+                                            // </a>
+                                            // </li>
+                                    li.events-group
+                                        .top-info
+                                            span Thursday
+                                        ul
+                                            // <li class="single-event" data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1">
+                                            // <a href="#0">
+                                            // <em class="event-name">Abs Circuit</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="12:00" data-end="13:45" data-content="event-restorative-yoga" data-event="event-4">
+                                            // <a href="#0">
+                                            // <em class="event-name">Restorative Yoga</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="15:30" data-end="16:30" data-content="event-abs-circuit" data-event="event-1">
+                                            // <a href="#0">
+                                            // <em class="event-name">Abs Circuit</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="17:00" data-end="18:30"  data-content="event-rowing-workout" data-event="event-2">
+                                            // <a href="#0">
+                                            // <em class="event-name">Rowing Workout</em>
+                                            // </a>
+                                            // </li>
+                                    li.events-group
+                                        .top-info
+                                            span Friday
+                                        ul
+                                            // <li class="single-event" data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2">
+                                            // <a href="#0">
+                                            // <em class="event-name">Rowing Workout</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="12:30" data-end="14:00" data-content="event-abs-circuit" data-event="event-1">
+                                            // <a href="#0">
+                                            // <em class="event-name">Abs Circuit</em>
+                                            // </a>
+                                            // </li>
+                                            // <li class="single-event" data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3">
+                                            // <a href="#0">
+                                            // <em class="event-name">Yoga Level 1</em>
+                                            // </a>
+                                            // </li>
+                            .event-modal
+                                header.header
+                                    .content
+                                        span.event-date
+                                        h3.event-name
+                                    .header-bg
+                                .body
+                                    .event-info
+                                    .body-bg
+                                a.close(href='#0') Close
+                            .cover-layer
+        script(src='http://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js')
+        script(src='/js/main.js')
+        // Gem jQuery
