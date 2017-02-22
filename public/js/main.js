@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
         tabItems.on('click', 'a', function(event){
             event.preventDefault();
             var selectedItem = $(this);
-            var socket = io.connect('http://45.76.100.30:2046');
+            var socket = io.connect('http://localhost:2046');
 
             var selectedTab = selectedItem.data('content'),
                 selectedSchedule = tabContentWrapper.find('.cd-schedule');
