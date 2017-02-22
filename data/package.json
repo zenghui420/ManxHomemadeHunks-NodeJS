@@ -1,10 +1,8 @@
 {
-  "name": "ManxHomemadeHunks",
+  "name": "DatabasePackage",
   "version": "0.0.1",
   "dependencies": {
-    "socket.io": "latest",
-    "express": "latest",
-    "pug": "latest",
+    "fs": "latest",
     "mongoose": "latest"
   },
   "author": "Gavin Lin, Edmund"
