@@ -22,8 +22,9 @@ app.use(express.static(__dirname + "/public"));
 var io = require("socket.io").listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
+    var id = socket.id;
    socket.on('request', function (data) {
-      io.sockets.emit('response', {name: data.request});
+      io.sockets.to(id).emit('response', {name: data.request});
    });
 
 });

@@ -72,7 +72,8 @@ jQuery(document).ready(function($){
 
                     var selectedContentHeight = tabContentWrapper.find('body').innerHeight();
 
-                    tabItems.find('a.selected').removeClass('selected');
+                    var prevItem = tabItems.find('a.selected');
+                    prevItem.removeClass('selected');
                     selectedItem.addClass('selected');
                     // selectedContent.addClass('selected').siblings('div').removeClass('selected').find('div').removeClass('selected');
                     // selectedsubContent.addClass('selected');
