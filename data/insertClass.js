@@ -2,8 +2,7 @@
  * Created by Edmund on 2/22/2017.
  */
 
-var Class = require('../models/class').classSchema;
-var ClassA = require('../models/class').Class_A;
+var ClassA = require('../models/ClassA');
 var mongoose = require('mongoose');
 var dbConfig = require('./db');
 var fs = require('fs');
@@ -30,4 +29,15 @@ fs.readFile('ClassAData.json', 'utf8', function (err, data) {
             }
         });
     }
+});
+
+ClassA.findOne({}, function (err, result) {
+    if (err) {
+        console.log("There is an error: "+ err);
+        return handleError(err);
+    }
+    if (!result) {
+        console.log("No result!");
+    }
+    console.log(result.teacher);
 });

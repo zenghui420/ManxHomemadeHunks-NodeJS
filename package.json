@@ -5,7 +5,10 @@
     "socket.io": "latest",
     "express": "latest",
     "pug": "latest",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "cookie-parser": "latest",
+    "body-parser": "latest",
+    "fs": "latest"
   },
   "author": "Gavin Lin, Edmund"
 }
