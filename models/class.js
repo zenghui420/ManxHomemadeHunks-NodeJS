@@ -1,7 +1,7 @@
 /**
  * Created by Edmund on 2/22/2017.
  */
-var mongoose = require('../data/node_modules/mongoose');
+var mongoose = require('mongoose');
 
 module.exports = new mongoose.Schema({
     time: {
