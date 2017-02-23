@@ -7,7 +7,14 @@ var mongoose = require('mongoose');
 var dbConfig = require('./db');
 var fs = require('fs');
 
-mongoose.connect(dbConfig.url);
+mongoose.connect(dbConfig.url, {
+    server: {
+        socketOptions: {
+            socketTimeoutMS: 0,
+            connecTimeoutMS: 0
+        }
+    }
+});
 
 fs.readFile('./data/ClassAData.json', 'utf8', function (err, data) {
     if (err) throw err; // we'll not consider error handling for now
