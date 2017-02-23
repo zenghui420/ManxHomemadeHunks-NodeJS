@@ -10,6 +10,8 @@ jQuery(document).ready(function($){
 		backToLoginLink = formForgotPassword.find('.cd-form-bottom-message a'),
 		mainNav = $('.main-nav');
 
+	var eventsNum = ['event-1','event-2','event-3','event-4'];
+
     var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
     var transitionsSupported = ( $('.csstransitions').length > 0 );
 
@@ -53,7 +55,9 @@ jQuery(document).ready(function($){
                         listItem.setAttribute('data-start',events[j].time.start);
                         listItem.setAttribute('data-end',events[j].time.end);
                         listItem.setAttribute('data-content',events[j].teacher);
-                        listItem.setAttribute('data-event','event-1');
+
+                        var k = Math.floor(Math.random()*4);
+                        listItem.setAttribute('data-event',eventsNum[k]);
 
                         var anchorEvent = document.createElement('a');
 
