@@ -34,22 +34,25 @@ jQuery(document).ready(function($){
 
             socket.emit('request', {request: selectedTab});
 
-            socket.on('response', function(event) {
+            socket.on('response', function(events) {
                 if( !selectedItem.hasClass('selected') ) {
                     var eventsContent =tabContentWrapper.find('.events-group');
-
-                    for (var i=0; i<eventsContent.length; i++) {
-                        var topInfo = eventsContent[i].getElementsByClassName('top-info');
-                        var unOrdered = eventsContent[i].getElementsByTagName('ul')[0];
-
-                        $(unOrdered).empty();
+                    for (var i=0; i< eventsContent.length; i++) {
+                        var ulElement = eventsContent[i].getElementsByTagName('ul')[0];
+                        $(ulElement).empty();
+                    }
+                    // console.log(events[0].teacher);
+                    for (var j=0; j<events.length; j++) {
+                        var i = events[j].weekDay;
+                        // console.log(events[j].weekDay);
+                        var ulElement = eventsContent[i].getElementsByTagName('ul')[0];
 
                         var listItem = document.createElement('li');
 
                         listItem.setAttribute('class','single-event');
-                        listItem.setAttribute('data-start','09:30');
-                        listItem.setAttribute('data-end','11:00');
-                        listItem.setAttribute('data-content','event-abs-circuit');
+                        listItem.setAttribute('data-start',events[j].time.start);
+                        listItem.setAttribute('data-end',events[j].time.end);
+                        listItem.setAttribute('data-content',events[j].teacher);
                         listItem.setAttribute('data-event','event-1');
 
                         var anchorEvent = document.createElement('a');
@@ -60,13 +63,43 @@ jQuery(document).ready(function($){
 
                         emphasized.setAttribute('class','event-name');
 
-                        var eventName = document.createTextNode(event.teacher);
+                        var eventName = document.createTextNode(events[j].teacher);
 
                         emphasized.appendChild(eventName);
                         anchorEvent.appendChild(emphasized);
                         listItem.appendChild(anchorEvent);
-                        unOrdered.appendChild(listItem);
+                        ulElement.appendChild(listItem);
                     }
+
+                    // for (var i=0; i<eventsContent.length; i++) {
+                    //     var topInfo = eventsContent[i].getElementsByClassName('top-info');
+                    //     var unOrdered = eventsContent[i].getElementsByTagName('ul')[0];
+                    //
+                    //     $(unOrdered).empty();
+                    //
+                    //     var listItem = document.createElement('li');
+                    //
+                    //     listItem.setAttribute('class','single-event');
+                    //     listItem.setAttribute('data-start','09:30');
+                    //     listItem.setAttribute('data-end','11:00');
+                    //     listItem.setAttribute('data-content','event-abs-circuit');
+                    //     listItem.setAttribute('data-event','event-1');
+                    //
+                    //     var anchorEvent = document.createElement('a');
+                    //
+                    //     anchorEvent.setAttribute('href','#0');
+                    //
+                    //     var emphasized = document.createElement('em');
+                    //
+                    //     emphasized.setAttribute('class','event-name');
+                    //
+                    //     var eventName = document.createTextNode(event.teacher);
+                    //
+                    //     emphasized.appendChild(eventName);
+                    //     anchorEvent.appendChild(emphasized);
+                    //     listItem.appendChild(anchorEvent);
+                    //     unOrdered.appendChild(listItem);
+                    // }
 
                     new SchedulePlan($(selectedSchedule)).placeEvents();
 

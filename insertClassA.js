@@ -2,9 +2,9 @@
  * Created by Edmund on 2/22/2017.
  */
 
-var ClassA = require('models/ClassA');
+var ClassA = require('./models/ClassA');
 var mongoose = require('mongoose');
-var dbConfig = require('.db');
+var dbConfig = require('./db');
 var fs = require('fs');
 
 mongoose.connect(dbConfig.url);
@@ -31,13 +31,14 @@ fs.readFile('./data/ClassAData.json', 'utf8', function (err, data) {
     }
 });
 
-ClassA.findOne({}, function (err, result) {
-    if (err) {
-        console.log("There is an error: "+ err);
-        return handleError(err);
-    }
-    if (!result) {
-        console.log("No result!");
-    }
-    console.log(result.teacher);
-});
+// ClassA.findOne({}, function (err, result) {
+//     if (err) {
+//         console.log("There is an error: "+ err);
+//         return handleError(err);
+//     }
+//     if (!result) {
+//         console.log("No result!");
+//     } else {
+//         console.log(result.teacher);
+//     }
+// });
