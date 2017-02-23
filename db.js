@@ -1,3 +1,3 @@
 module.exports = {
-    'url': 'mongodb://45.76.100.30/test'
+    'url': 'mongodb://45.76.100.30/test/?connectTimeoutMS=300000&socketTimeoutMS=300000'
 }
