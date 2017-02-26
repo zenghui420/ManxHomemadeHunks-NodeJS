@@ -9,6 +9,7 @@ jQuery(document).ready(function($){
 		forgotPasswordLink = formLogin.find('.cd-form-bottom-message a'),
 		backToLoginLink = formForgotPassword.find('.cd-form-bottom-message a'),
 		mainNav = $('.main-nav');
+	var eventsNum = ['event-1','event-2','event-3','event-4'];
 
 	var eventsNum = ['event-1','event-2','event-3','event-4'];
 
@@ -29,7 +30,7 @@ jQuery(document).ready(function($){
         tabItems.on('click', 'a', function(event){
             event.preventDefault();
             var selectedItem = $(this);
-            var socket = io.connect('http://localhost:2046');
+            var socket = io.connect('http://45.76.100.30:2046');
 
             var selectedTab = selectedItem.data('content'),
                 selectedSchedule = tabContentWrapper.find('.cd-schedule');
