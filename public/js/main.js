@@ -11,6 +11,8 @@ jQuery(document).ready(function ($) {
         mainNav = $('.main-nav');
 
     var eventsNum = ['event-1', 'event-2', 'event-3', 'event-4'];
+    var serverURL = 'http://localhost:2046';
+    // var serverURL = 'http://localhost:2046';
 
     var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
     var transitionsSupported = ( $('.csstransitions').length > 0 );
@@ -29,7 +31,7 @@ jQuery(document).ready(function ($) {
         tabItems.on('click', 'a', function (event) {
             event.preventDefault();
             var selectedItem = $(this);
-            var socket = io.connect('http://localhost:2046');
+            var socket = io.connect(serverURL);
 
             var selectedTab = selectedItem.data('content'),
                 selectedSchedule = tabContentWrapper.find('.cd-schedule');
@@ -172,7 +174,7 @@ jQuery(document).ready(function ($) {
         this.modalBody = this.modal.find('.body');
         this.modalBodyBg = this.modal.find('.body-bg');
         this.modalMaxWidth = 800;
-        this.modalMaxHeight = 480;
+        this.modalMaxHeight = 400;
 
         this.animating = false;
 
@@ -265,9 +267,10 @@ jQuery(document).ready(function ($) {
         var eventId = event.parent().attr('data-id');
         // console.log(eventId);
         var controlGroup = this.modalBody.find('.control-group')[0];
-        $(controlGroup).empty();
+        var labelContainer = this.modalBody.find('.label-container')[0];
+        $(labelContainer).empty();
 
-        var socket = io.connect('http://localhost:2046');
+        var socket = io.connect(serverURL);
         socket.emit('event', {
             classType: ClassX,
             _id: eventId
@@ -291,8 +294,22 @@ jQuery(document).ready(function ($) {
                 groupLabel.appendChild(labelName);
                 groupLabel.appendChild(groupInput);
                 groupLabel.appendChild(groupDiv);
-                controlGroup.appendChild(groupLabel);
+                labelContainer.appendChild(groupLabel);
             }
+
+            // var buttonAnchor = document.createElement('a');
+            // var buttonText = document.createTextNode('Hello Slut');
+            //
+            // buttonAnchor.setAttribute('class','cd-popup-trigger');
+            // buttonAnchor.setAttribute('href','#0');
+            //
+            // buttonAnchor.appendChild(buttonText);
+            // controlGroup.appendChild(buttonAnchor);
+            //
+            // $('.cd-popup-trigger').on('click', function(event){
+            //     event.preventDefault();
+            //     $('.cd-popup').addClass('is-visible');
+            // });
 
             // console.log(classInfo.length);
         });
@@ -308,6 +325,10 @@ jQuery(document).ready(function ($) {
         //         self.element.addClass('content-loaded');
         //     }
         // });
+
+        // var eventInfo = this.modalBody.find('event-info')[0];
+        // var eventText = document.createTextNode('Hello Slut');
+        // eventInfo.appendChild(eventText);
 
         self.element.addClass('content-loaded');
         this.element.addClass('modal-is-open');
@@ -681,6 +702,25 @@ jQuery(document).ready(function ($) {
             })
         });
     }
+
+    $('.cd-popup-trigger').on('click', function(event){
+        event.preventDefault();
+        $('.cd-popup').addClass('is-visible');
+    });
+
+    //close popup
+    $('.cd-popup').on('click', function(event){
+        if( $(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup') ) {
+            event.preventDefault();
+            $(this).removeClass('is-visible');
+        }
+    });
+    //close popup when clicking the esc keyboard button
+    $(document).keyup(function(event){
+        if(event.which=='27'){
+            $('.cd-popup').removeClass('is-visible');
+        }
+    });
 
 });
 

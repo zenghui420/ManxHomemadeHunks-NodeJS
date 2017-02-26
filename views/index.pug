@@ -280,25 +280,20 @@ html.no-js(lang='en')
                                 .body
                                     .event-info
                                         .control-group
-                                            //label.control.control--radio
-                                            //    | First radio
-                                            //    input(type='radio', name='radio', checked='checked')
-                                            //    .control__indicator
-                                            //label.control.control--radio
-                                            //    | Second radio
-                                            //    input(type='radio', name='radio')
-                                            //    .control__indicator
-                                            //label.control.control--radio
-                                            //    | Disabled
-                                            //    input(type='radio', name='radio', disabled='disabled')
-                                            //    .control__indicator
-                                            //label.control.control--radio
-                                            //    | Disabled & checked
-                                            //    input(type='radio', name='radio2', disabled='disabled', checked='checked')
-                                            //    .control__indicator
+                                            .label-container
+                                            a.cd-popup-trigger(href='#0') Confirm
                                     .body-bg
                                 a.close(href='#0') Close
                             .cover-layer
+                            .cd-popup(role='alert')
+                                .cd-popup-container
+                                    p Are you sure you want to delete this element?
+                                    ul.cd-buttons
+                                        li
+                                            a(href='#0') Yes
+                                        li
+                                            a(href='#0') No
+                                    a.cd-popup-close.img-replace(href='#0')
         script(src='http://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js')
         script(src='/js/main.js')
         // Gem jQuery
