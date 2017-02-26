@@ -5,17 +5,29 @@
       "end": "11:00"
     },
     "weekDay": 1,
-    "teacher": "Gaga",
-    "student": null
+    "info": [
+      {
+        "teacher": "Gaga",
+        "student": null
+      },
+      {
+        "teacher": "Katy Perry",
+        "student": null
+      }
+    ]
   },
   {
     "time": {
       "start": "10:30",
       "end": "12:00"
     },
-    "weekDay": 2,
-    "teacher": "Katy Perry",
-    "student": null
+    "weekDay": 3,
+    "info": [
+      {
+        "teacher": "Katy Perry",
+        "student": null
+      }
+    ]
   },
   {
     "time": {
@@ -23,26 +35,12 @@
       "end": "15:00"
     },
     "weekDay": 4,
-    "teacher": "Katy Perry",
-    "student": null
-  },
-  {
-    "time": {
-      "start": "15:30",
-      "end": "17:00"
-    },
-    "weekDay": 3,
-    "teacher": "Rihanna",
-    "student": null
-  },
-  {
-    "time": {
-      "start": "15:30",
-      "end": "17:00"
-    },
-    "weekDay": 0,
-    "teacher": "Rihanna",
-    "student": null
+    "info": [
+      {
+        "teacher": "Katy Perry",
+        "student": null
+      }
+    ]
   },
   {
     "time": {
@@ -50,7 +48,45 @@
       "end": "17:00"
     },
     "weekDay": 2,
-    "teacher": "Mariah Carry",
-    "student": null
+    "info": [
+      {
+        "teacher": "Rihanna",
+        "student": null
+      }
+    ]
+  },
+  {
+    "time": {
+      "start": "15:30",
+      "end": "17:00"
+    },
+    "weekDay": 1,
+    "info": [
+      {
+        "teacher": "Rihanna",
+        "student": null
+      }
+    ]
+  },
+  {
+    "time": {
+      "start": "15:30",
+      "end": "17:00"
+    },
+    "weekDay": 4,
+    "info": [
+      {
+        "teacher": "Mariah Carry",
+        "student": null
+      },
+      {
+        "teacher": "Modonna",
+        "student": null
+      },
+      {
+        "teacher": "Tina Turner",
+        "student": null
+      }
+    ]
   }
 ]

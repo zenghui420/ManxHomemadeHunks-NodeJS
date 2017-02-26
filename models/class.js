@@ -9,8 +9,12 @@ module.exports = new mongoose.Schema({
         end: String
     },
     weekDay: Number,
-    teacher: String,
-    student: String
+    info: [
+        {
+            teacher: String,
+            student: String
+        }
+    ]
 });
 //
 // module.exports.Class_A = mongoose.model('ClassA', class_Schema);

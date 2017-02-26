@@ -18,7 +18,8 @@ fs.readFile('./data/ClassBData.json', 'utf8', function (err, data) {
         newClassB.time.start = obj[i].time.start;
         newClassB.time.end = obj[i].time.end;
         newClassB.weekDay = obj[i].weekDay;
-        newClassB.teacher = obj[i].teacher;
+
+        newClassB.info = obj[i].info;
 
         // console.log(newClassA.teacher);
         newClassB.save(function(err) {
@@ -29,7 +30,7 @@ fs.readFile('./data/ClassBData.json', 'utf8', function (err, data) {
         });
     }
 });
-
+//
 // ClassB.findOne({}, function (err, result) {
 //     if (err) {
 //         console.log("There is an error: "+ err);
@@ -38,6 +39,6 @@ fs.readFile('./data/ClassBData.json', 'utf8', function (err, data) {
 //     if (!result) {
 //         console.log("No result!");
 //     } else {
-//         console.log(result.teacher);
+//         console.log(result.info[0].teacher);
 //     }
 // });

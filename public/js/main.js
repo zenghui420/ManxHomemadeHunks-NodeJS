@@ -1,32 +1,32 @@
-jQuery(document).ready(function($){
-	var formModal = $('.cd-user-modal'),
-		formLogin = formModal.find('#cd-login'),
-		formSignup = formModal.find('#cd-signup'),
-		formForgotPassword = formModal.find('#cd-reset-password'),
-		formModalTab = $('.cd-switcher'),
-		tabLogin = formModalTab.children('li').eq(0).children('a'),
-		tabSignup = formModalTab.children('li').eq(1).children('a'),
-		forgotPasswordLink = formLogin.find('.cd-form-bottom-message a'),
-		backToLoginLink = formForgotPassword.find('.cd-form-bottom-message a'),
-		mainNav = $('.main-nav');
+jQuery(document).ready(function ($) {
+    var formModal = $('.cd-user-modal'),
+        formLogin = formModal.find('#cd-login'),
+        formSignup = formModal.find('#cd-signup'),
+        formForgotPassword = formModal.find('#cd-reset-password'),
+        formModalTab = $('.cd-switcher'),
+        tabLogin = formModalTab.children('li').eq(0).children('a'),
+        tabSignup = formModalTab.children('li').eq(1).children('a'),
+        forgotPasswordLink = formLogin.find('.cd-form-bottom-message a'),
+        backToLoginLink = formForgotPassword.find('.cd-form-bottom-message a'),
+        mainNav = $('.main-nav');
 
-	var eventsNum = ['event-1','event-2','event-3','event-4'];
+    var eventsNum = ['event-1', 'event-2', 'event-3', 'event-4'];
 
     var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
     var transitionsSupported = ( $('.csstransitions').length > 0 );
 
     //if browser does not support transitions - use a different event to trigger them
-    if( !transitionsSupported ) transitionEnd = 'noTransition';
+    if (!transitionsSupported) transitionEnd = 'noTransition';
 
     var tabs = $('.cd-tabs');
 
-    tabs.each(function(){
+    tabs.each(function () {
         var tab = $(this),
             tabItems = tab.find('ul.cd-tabs-navigation'),
             tabContentWrapper = tab.children('div.cd-tabs-content'),
             tabNavigation = tab.find('nav');
 
-        tabItems.on('click', 'a', function(event){
+        tabItems.on('click', 'a', function (event) {
             event.preventDefault();
             var selectedItem = $(this);
             var socket = io.connect('http://localhost:2046');
@@ -34,40 +34,42 @@ jQuery(document).ready(function($){
             var selectedTab = selectedItem.data('content'),
                 selectedSchedule = tabContentWrapper.find('.cd-schedule');
 
-            socket.emit('request', {request: selectedTab});
+            socket.emit('events', {classType: selectedTab});
 
-            socket.on('response', function(events) {
-                if( !selectedItem.hasClass('selected') ) {
-                    var eventsContent =tabContentWrapper.find('.events-group');
-                    for (var i=0; i< eventsContent.length; i++) {
+            socket.on('res-events', function (events) {
+                if (!selectedItem.hasClass('selected')) {
+                    var eventsContent = tabContentWrapper.find('.events-group');
+                    for (var i = 0; i < eventsContent.length; i++) {
                         var ulElement = eventsContent[i].getElementsByTagName('ul')[0];
                         $(ulElement).empty();
                     }
                     // console.log(events[0].teacher);
-                    for (var j=0; j<events.length; j++) {
+                    for (var j = 0; j < events.length; j++) {
                         var i = events[j].weekDay;
                         // console.log(events[j].weekDay);
                         var ulElement = eventsContent[i].getElementsByTagName('ul')[0];
 
                         var listItem = document.createElement('li');
 
-                        listItem.setAttribute('class','single-event');
-                        listItem.setAttribute('data-start',events[j].time.start);
-                        listItem.setAttribute('data-end',events[j].time.end);
-                        listItem.setAttribute('data-content',events[j].teacher);
+                        listItem.setAttribute('class', 'single-event');
+                        listItem.setAttribute('data-start', events[j].time.start);
+                        listItem.setAttribute('data-end', events[j].time.end);
+                        listItem.setAttribute('data-content', selectedTab);
+                        listItem.setAttribute('data-id', events[j]._id);
 
-                        var k = Math.floor(Math.random()*4);
-                        listItem.setAttribute('data-event',eventsNum[k]);
+                        var k = Math.floor(Math.random() * 4);
+                        listItem.setAttribute('data-event', eventsNum[k]);
 
                         var anchorEvent = document.createElement('a');
 
-                        anchorEvent.setAttribute('href','#0');
+                        anchorEvent.setAttribute('href', '#0');
 
                         var emphasized = document.createElement('em');
 
-                        emphasized.setAttribute('class','event-name');
+                        emphasized.setAttribute('class', 'event-name');
 
-                        var eventName = document.createTextNode(events[j].teacher);
+                        var eventName = document.createTextNode(selectedTab);
+                        // console.log(events[j]._id);
 
                         emphasized.appendChild(eventName);
                         anchorEvent.appendChild(emphasized);
@@ -125,23 +127,23 @@ jQuery(document).ready(function($){
 
         //hide the .cd-tabs::after element when tabbed navigation has scrolled to the end (mobile version)
         checkScrolling(tabNavigation);
-        tabNavigation.on('scroll', function(){
+        tabNavigation.on('scroll', function () {
             checkScrolling($(this));
         });
     });
 
-    $(window).on('resize', function(){
-        tabs.each(function(){
+    $(window).on('resize', function () {
+        tabs.each(function () {
             var tab = $(this);
             checkScrolling(tab.find('nav'));
             tab.find('.cd-tabs-content').css('height', 'auto');
         });
     });
 
-    function checkScrolling(tabs){
+    function checkScrolling(tabs) {
         var totalTabWidth = parseInt(tabs.children('.cd-tabs-navigation').width()),
             tabsViewport = parseInt(tabs.width());
-        if( tabs.scrollLeft() >= totalTabWidth - tabsViewport) {
+        if (tabs.scrollLeft() >= totalTabWidth - tabsViewport) {
             tabs.parent('.cd-tabs').addClass('is-ended');
         } else {
             tabs.parent('.cd-tabs').removeClass('is-ended');
@@ -150,7 +152,7 @@ jQuery(document).ready(function($){
 
     //should add a loding while the events are organized
 
-    function SchedulePlan( element ) {
+    function SchedulePlan(element) {
         this.element = element;
         this.timeline = this.element.find('.timeline');
         this.timelineItems = this.timeline.find('li');
@@ -177,26 +179,26 @@ jQuery(document).ready(function($){
         this.initSchedule();
     }
 
-    SchedulePlan.prototype.initSchedule = function() {
+    SchedulePlan.prototype.initSchedule = function () {
         this.scheduleReset();
         this.initEvents();
     };
 
-    SchedulePlan.prototype.scheduleReset = function() {
+    SchedulePlan.prototype.scheduleReset = function () {
         var mq = this.mq();
-        if( mq == 'desktop' && !this.element.hasClass('js-full') ) {
+        if (mq == 'desktop' && !this.element.hasClass('js-full')) {
             //in this case you are on a desktop version (first load or resize from mobile)
             this.eventSlotHeight = this.eventsGroup.eq(0).children('.top-info').outerHeight();
             this.element.addClass('js-full');
             this.placeEvents();
             this.element.hasClass('modal-is-open') && this.checkEventModal();
-        } else if(  mq == 'mobile' && this.element.hasClass('js-full') ) {
+        } else if (mq == 'mobile' && this.element.hasClass('js-full')) {
             //in this case you are on a mobile version (first load or resize from desktop)
             this.element.removeClass('js-full loading');
             this.eventsGroup.children('ul').add(this.singleEvents).removeAttr('style');
             this.eventsWrapper.children('.grid-line').remove();
             this.element.hasClass('modal-is-open') && this.checkEventModal();
-        } else if( mq == 'desktop' && this.element.hasClass('modal-is-open')){
+        } else if (mq == 'desktop' && this.element.hasClass('modal-is-open')) {
             //on a mobile version with modal open - need to resize/move modal window
             this.checkEventModal('desktop');
             this.element.removeClass('loading');
@@ -205,79 +207,95 @@ jQuery(document).ready(function($){
         }
     };
 
-    SchedulePlan.prototype.initEvents = function() {
+    SchedulePlan.prototype.initEvents = function () {
         var self = this;
 
-        this.singleEvents.each(function(){
+        this.singleEvents.each(function () {
             //create the .event-date element for each event
-            var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
+            var durationLabel = '<span class="event-date">' + $(this).data('start') + ' - ' + $(this).data('end') + '</span>';
             $(this).children('a').prepend($(durationLabel));
 
             //detect click on the event and open the modal
-            $(this).on('click', 'a', function(event){
+            $(this).on('click', 'a', function (event) {
                 event.preventDefault();
-                if( !self.animating ) self.openModal($(this));
+                if (!self.animating) self.openModal($(this));
             });
         });
 
         //close modal window
-        this.modal.on('click', '.close', function(event){
+        this.modal.on('click', '.close', function (event) {
             event.preventDefault();
-            if( !self.animating ) self.closeModal(self.eventsGroup.find('.selected-event'));
+            if (!self.animating) self.closeModal(self.eventsGroup.find('.selected-event'));
         });
-        this.element.on('click', '.cover-layer', function(event){
-            if( !self.animating && self.element.hasClass('modal-is-open') ) self.closeModal(self.eventsGroup.find('.selected-event'));
+        this.element.on('click', '.cover-layer', function (event) {
+            if (!self.animating && self.element.hasClass('modal-is-open')) self.closeModal(self.eventsGroup.find('.selected-event'));
         });
     };
 
-    SchedulePlan.prototype.placeEvents = function() {
+    SchedulePlan.prototype.placeEvents = function () {
         var self = this;
-        this.singleEvents.each(function(){
+        this.singleEvents.each(function () {
             //place each event in the grid -> need to set top position and height
             var start = getScheduleTimestamp($(this).attr('data-start')),
                 duration = getScheduleTimestamp($(this).attr('data-end')) - start;
             // console.log($(this).attr('data-start'));
 
-            var eventTop = self.eventSlotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
-                eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
+            var eventTop = self.eventSlotHeight * (start - self.timelineStart) / self.timelineUnitDuration,
+                eventHeight = self.eventSlotHeight * duration / self.timelineUnitDuration;
 
             $(this).css({
-                top: (eventTop -1) +'px',
-                height: (eventHeight+1)+'px'
+                top: (eventTop - 1) + 'px',
+                height: (eventHeight + 1) + 'px'
             });
         });
 
         this.element.removeClass('loading');
     };
 
-    SchedulePlan.prototype.openModal = function(event) {
+    SchedulePlan.prototype.openModal = function (event) {
         var self = this;
         var mq = self.mq();
         this.animating = true;
 
         //update event name and time
-        this.modalHeader.find('.event-name').text(event.find('.event-name').text());
+        var ClassX = event.find('.event-name').text();
+        this.modalHeader.find('.event-name').text(ClassX);
         this.modalHeader.find('.event-date').text(event.find('.event-date').text());
         this.modal.attr('data-event', event.parent().attr('data-event'));
-
+        var eventId = event.parent().attr('data-id');
+        // console.log(eventId);
         var controlGroup = this.modalBody.find('.control-group')[0];
-        var groupLabel = document.createElement('label');
-        var groupInput = document.createElement('input');
-        var groupDiv = document.createElement('div');
-        var labelName = document.createTextNode('Test Radio');
+        $(controlGroup).empty();
 
-        groupLabel.setAttribute('class','control control--radio');
+        var socket = io.connect('http://localhost:2046');
+        socket.emit('event', {
+            classType: ClassX,
+            _id: eventId
+        });
 
-        groupInput.setAttribute('type','radio');
-        groupInput.setAttribute('name','radio');
+        socket.on('res-event', function(event) {
+            var classInfo = event.info;
+            for (var i=0; i<classInfo.length; i++) {
+                var groupLabel = document.createElement('label');
+                var groupInput = document.createElement('input');
+                var groupDiv = document.createElement('div');
+                var labelName = document.createTextNode(classInfo[i].teacher);
 
-        groupDiv.setAttribute('class','control__indicator');
+                groupLabel.setAttribute('class', 'control control--radio');
 
-        groupLabel.appendChild(labelName);
-        groupLabel.appendChild(groupInput);
-        groupLabel.appendChild(groupDiv);
-        controlGroup.appendChild(groupLabel);
-        console.log('hello');
+                groupInput.setAttribute('type', 'radio');
+                groupInput.setAttribute('name', 'radio');
+
+                groupDiv.setAttribute('class', 'control__indicator');
+
+                groupLabel.appendChild(labelName);
+                groupLabel.appendChild(groupInput);
+                groupLabel.appendChild(groupDiv);
+                controlGroup.appendChild(groupLabel);
+            }
+
+            // console.log(classInfo.length);
+        });
 
         // update event content
         // var url = 'ftp://zenghui420:mzh-67666526@45.76.100.30/files/';
@@ -294,13 +312,13 @@ jQuery(document).ready(function($){
         self.element.addClass('content-loaded');
         this.element.addClass('modal-is-open');
 
-        setTimeout(function(){
+        setTimeout(function () {
             //fixes a flash when an event is selected - desktop version only
             event.parent('li').addClass('selected-event');
         }, 10);
 
-        if( mq == 'mobile' ) {
-            self.modal.one(transitionEnd, function(){
+        if (mq == 'mobile') {
+            self.modal.one(transitionEnd, function () {
                 self.modal.off(transitionEnd);
                 self.animating = false;
             });
@@ -313,48 +331,48 @@ jQuery(document).ready(function($){
             var windowWidth = $(window).width(),
                 windowHeight = $(window).height();
 
-            var modalWidth = ( windowWidth*.8 > self.modalMaxWidth ) ? self.modalMaxWidth : windowWidth*.8,
-                modalHeight = ( windowHeight*.8 > self.modalMaxHeight ) ? self.modalMaxHeight : windowHeight*.8;
+            var modalWidth = ( windowWidth * .8 > self.modalMaxWidth ) ? self.modalMaxWidth : windowWidth * .8,
+                modalHeight = ( windowHeight * .8 > self.modalMaxHeight ) ? self.modalMaxHeight : windowHeight * .8;
 
-            var modalTranslateX = parseInt((windowWidth - modalWidth)/2 - eventLeft),
-                modalTranslateY = parseInt((windowHeight - modalHeight)/2 - eventTop);
+            var modalTranslateX = parseInt((windowWidth - modalWidth) / 2 - eventLeft),
+                modalTranslateY = parseInt((windowHeight - modalHeight) / 2 - eventTop);
 
-            var HeaderBgScaleY = modalHeight/eventHeight,
+            var HeaderBgScaleY = modalHeight / eventHeight,
                 BodyBgScaleX = (modalWidth - eventWidth);
 
             //change modal height/width and translate it
             self.modal.css({
-                top: eventTop+'px',
-                left: eventLeft+'px',
-                height: modalHeight+'px',
-                width: modalWidth+'px',
+                top: eventTop + 'px',
+                left: eventLeft + 'px',
+                height: modalHeight + 'px',
+                width: modalWidth + 'px',
             });
-            transformElement(self.modal, 'translateY('+modalTranslateY+'px) translateX('+modalTranslateX+'px)');
+            transformElement(self.modal, 'translateY(' + modalTranslateY + 'px) translateX(' + modalTranslateX + 'px)');
 
             //set modalHeader width
             self.modalHeader.css({
-                width: eventWidth+'px',
+                width: eventWidth + 'px',
             });
             //set modalBody left margin
             self.modalBody.css({
-                marginLeft: eventWidth+'px',
+                marginLeft: eventWidth + 'px',
             });
 
             //change modalBodyBg height/width ans scale it
             self.modalBodyBg.css({
-                height: eventHeight+'px',
+                height: eventHeight + 'px',
                 width: '1px',
             });
-            transformElement(self.modalBodyBg, 'scaleY('+HeaderBgScaleY+') scaleX('+BodyBgScaleX+')');
+            transformElement(self.modalBodyBg, 'scaleY(' + HeaderBgScaleY + ') scaleX(' + BodyBgScaleX + ')');
 
             //change modal modalHeaderBg height/width and scale it
             self.modalHeaderBg.css({
-                height: eventHeight+'px',
-                width: eventWidth+'px',
+                height: eventHeight + 'px',
+                width: eventWidth + 'px',
             });
-            transformElement(self.modalHeaderBg, 'scaleY('+HeaderBgScaleY+')');
+            transformElement(self.modalHeaderBg, 'scaleY(' + HeaderBgScaleY + ')');
 
-            self.modalHeaderBg.one(transitionEnd, function(){
+            self.modalHeaderBg.one(transitionEnd, function () {
                 //wait for the  end of the modalHeaderBg transformation and show the modal content
                 self.modalHeaderBg.off(transitionEnd);
                 self.animating = false;
@@ -363,18 +381,18 @@ jQuery(document).ready(function($){
         }
 
         //if browser do not support transitions -> no need to wait for the end of it
-        if( !transitionsSupported ) self.modal.add(self.modalHeaderBg).trigger(transitionEnd);
+        if (!transitionsSupported) self.modal.add(self.modalHeaderBg).trigger(transitionEnd);
     };
 
-    SchedulePlan.prototype.closeModal = function(event) {
+    SchedulePlan.prototype.closeModal = function (event) {
         var self = this;
         var mq = self.mq();
 
         this.animating = true;
 
-        if( mq == 'mobile' ) {
+        if (mq == 'mobile') {
             this.element.removeClass('modal-is-open');
-            this.modal.one(transitionEnd, function(){
+            this.modal.one(transitionEnd, function () {
                 self.modal.off(transitionEnd);
                 self.animating = false;
                 self.element.removeClass('content-loaded');
@@ -396,24 +414,24 @@ jQuery(document).ready(function($){
 
             //change modal width/height and translate it
             this.modal.css({
-                width: eventWidth+'px',
-                height: eventHeight+'px'
+                width: eventWidth + 'px',
+                height: eventHeight + 'px'
             });
-            transformElement(self.modal, 'translateX('+modalTranslateX+'px) translateY('+modalTranslateY+'px)');
+            transformElement(self.modal, 'translateX(' + modalTranslateX + 'px) translateY(' + modalTranslateY + 'px)');
 
             //scale down modalBodyBg element
             transformElement(self.modalBodyBg, 'scaleX(0) scaleY(1)');
             //scale down modalHeaderBg element
             transformElement(self.modalHeaderBg, 'scaleY(1)');
 
-            this.modalHeaderBg.one(transitionEnd, function(){
+            this.modalHeaderBg.one(transitionEnd, function () {
                 //wait for the  end of the modalHeaderBg transformation and reset modal style
                 self.modalHeaderBg.off(transitionEnd);
                 self.modal.addClass('no-transition');
-                setTimeout(function(){
+                setTimeout(function () {
                     self.modal.add(self.modalHeader).add(self.modalBody).add(self.modalHeaderBg).add(self.modalBodyBg).attr('style', '');
                 }, 10);
-                setTimeout(function(){
+                setTimeout(function () {
                     self.modal.removeClass('no-transition');
                 }, 20);
 
@@ -424,26 +442,26 @@ jQuery(document).ready(function($){
         }
 
         //browser do not support transitions -> no need to wait for the end of it
-        if( !transitionsSupported ) self.modal.add(self.modalHeaderBg).trigger(transitionEnd);
+        if (!transitionsSupported) self.modal.add(self.modalHeaderBg).trigger(transitionEnd);
     }
 
-    SchedulePlan.prototype.mq = function(){
+    SchedulePlan.prototype.mq = function () {
         //get MQ value ('desktop' or 'mobile')
         var self = this;
         return window.getComputedStyle(this.element.get(0), '::before').getPropertyValue('content').replace(/["']/g, '');
     };
 
-    SchedulePlan.prototype.checkEventModal = function(device) {
+    SchedulePlan.prototype.checkEventModal = function (device) {
         this.animating = true;
         var self = this;
         var mq = this.mq();
 
-        if( mq == 'mobile' ) {
+        if (mq == 'mobile') {
             //reset modal style on mobile
             self.modal.add(self.modalHeader).add(self.modalHeaderBg).add(self.modalBody).add(self.modalBodyBg).attr('style', '');
             self.modal.removeClass('no-transition');
             self.animating = false;
-        } else if( mq == 'desktop' && self.element.hasClass('modal-is-open') ) {
+        } else if (mq == 'desktop' && self.element.hasClass('modal-is-open')) {
             self.modal.addClass('no-transition');
             self.element.addClass('animation-completed');
             var event = self.eventsGroup.find('.selected-event');
@@ -456,43 +474,43 @@ jQuery(document).ready(function($){
             var windowWidth = $(window).width(),
                 windowHeight = $(window).height();
 
-            var modalWidth = ( windowWidth*.8 > self.modalMaxWidth ) ? self.modalMaxWidth : windowWidth*.8,
-                modalHeight = ( windowHeight*.8 > self.modalMaxHeight ) ? self.modalMaxHeight : windowHeight*.8;
+            var modalWidth = ( windowWidth * .8 > self.modalMaxWidth ) ? self.modalMaxWidth : windowWidth * .8,
+                modalHeight = ( windowHeight * .8 > self.modalMaxHeight ) ? self.modalMaxHeight : windowHeight * .8;
 
-            var HeaderBgScaleY = modalHeight/eventHeight,
+            var HeaderBgScaleY = modalHeight / eventHeight,
                 BodyBgScaleX = (modalWidth - eventWidth);
 
-            setTimeout(function(){
+            setTimeout(function () {
                 self.modal.css({
-                    width: modalWidth+'px',
-                    height: modalHeight+'px',
-                    top: (windowHeight/2 - modalHeight/2)+'px',
-                    left: (windowWidth/2 - modalWidth/2)+'px',
+                    width: modalWidth + 'px',
+                    height: modalHeight + 'px',
+                    top: (windowHeight / 2 - modalHeight / 2) + 'px',
+                    left: (windowWidth / 2 - modalWidth / 2) + 'px',
                 });
                 transformElement(self.modal, 'translateY(0) translateX(0)');
                 //change modal modalBodyBg height/width
                 self.modalBodyBg.css({
-                    height: modalHeight+'px',
+                    height: modalHeight + 'px',
                     width: '1px',
                 });
-                transformElement(self.modalBodyBg, 'scaleX('+BodyBgScaleX+')');
+                transformElement(self.modalBodyBg, 'scaleX(' + BodyBgScaleX + ')');
                 //set modalHeader width
                 self.modalHeader.css({
-                    width: eventWidth+'px',
+                    width: eventWidth + 'px',
                 });
                 //set modalBody left margin
                 self.modalBody.css({
-                    marginLeft: eventWidth+'px',
+                    marginLeft: eventWidth + 'px',
                 });
                 //change modal modalHeaderBg height/width and scale it
                 self.modalHeaderBg.css({
-                    height: eventHeight+'px',
-                    width: eventWidth+'px',
+                    height: eventHeight + 'px',
+                    width: eventWidth + 'px',
                 });
-                transformElement(self.modalHeaderBg, 'scaleY('+HeaderBgScaleY+')');
+                transformElement(self.modalHeaderBg, 'scaleY(' + HeaderBgScaleY + ')');
             }, 10);
 
-            setTimeout(function(){
+            setTimeout(function () {
                 self.modal.removeClass('no-transition');
                 self.animating = false;
             }, 20);
@@ -503,30 +521,30 @@ jQuery(document).ready(function($){
     var objSchedulesPlan = [],
         windowResize = false;
 
-    if( schedules.length > 0 ) {
-        schedules.each(function(){
+    if (schedules.length > 0) {
+        schedules.each(function () {
             //create SchedulePlan objects
             objSchedulesPlan.push(new SchedulePlan($(this)));
         });
     }
 
-    $(window).on('resize', function(){
-        if( !windowResize ) {
+    $(window).on('resize', function () {
+        if (!windowResize) {
             windowResize = true;
             (!window.requestAnimationFrame) ? setTimeout(checkResize) : window.requestAnimationFrame(checkResize);
         }
     });
 
-    $(window).keyup(function(event) {
+    $(window).keyup(function (event) {
         if (event.keyCode == 27) {
-            objSchedulesPlan.forEach(function(element){
+            objSchedulesPlan.forEach(function (element) {
                 element.closeModal(element.eventsGroup.find('.selected-event'));
             });
         }
     });
 
-    function checkResize(){
-        objSchedulesPlan.forEach(function(element){
+    function checkResize() {
+        objSchedulesPlan.forEach(function (element) {
             element.scheduleReset();
         });
         windowResize = false;
@@ -534,9 +552,9 @@ jQuery(document).ready(function($){
 
     function getScheduleTimestamp(time) {
         //accepts hh:mm format - convert hh:mm to timestamp
-        time = time.replace(/ /g,'');
+        time = time.replace(/ /g, '');
         var timeArray = time.split(':');
-        var timeStamp = parseInt(timeArray[0])*60 + parseInt(timeArray[1]);
+        var timeStamp = parseInt(timeArray[0]) * 60 + parseInt(timeArray[1]);
         return timeStamp;
     }
 
@@ -550,136 +568,136 @@ jQuery(document).ready(function($){
         });
     }
 
-	//open modal
-	mainNav.on('click', function(event){
-		$(event.target).is(mainNav) && mainNav.children('ul').toggleClass('is-visible');
-	});
-
-	//open sign-up form
-	mainNav.on('click', '.cd-signup', signup_selected);
-	//open login-form form
-	mainNav.on('click', '.cd-signin', login_selected);
-
-	//close modal
-	formModal.on('click', function(event){
-		if( $(event.target).is(formModal) || $(event.target).is('.cd-close-form') ) {
-			formModal.removeClass('is-visible');
-		}	
-	});
-	//close modal when clicking the esc keyboard button
-	$(document).keyup(function(event){
-    	if(event.which=='27'){
-    		formModal.removeClass('is-visible');
-	    }
+    //open modal
+    mainNav.on('click', function (event) {
+        $(event.target).is(mainNav) && mainNav.children('ul').toggleClass('is-visible');
     });
 
-	//switch from a tab to another
-	formModalTab.on('click', function(event) {
-		event.preventDefault();
-		( $(event.target).is( tabLogin ) ) ? login_selected() : signup_selected();
-	});
+    //open sign-up form
+    mainNav.on('click', '.cd-signup', signup_selected);
+    //open login-form form
+    mainNav.on('click', '.cd-signin', login_selected);
 
-	//hide or show password
-	$('.hide-password').on('click', function(){
-		var togglePass= $(this),
-			passwordField = togglePass.prev('input');
-		
-		( 'password' == passwordField.attr('type') ) ? passwordField.attr('type', 'text') : passwordField.attr('type', 'password');
-		( 'Hide' == togglePass.text() ) ? togglePass.text('Show') : togglePass.text('Hide');
-		//focus and move cursor to the end of input field
-		passwordField.putCursorAtEnd();
-	});
+    //close modal
+    formModal.on('click', function (event) {
+        if ($(event.target).is(formModal) || $(event.target).is('.cd-close-form')) {
+            formModal.removeClass('is-visible');
+        }
+    });
+    //close modal when clicking the esc keyboard button
+    $(document).keyup(function (event) {
+        if (event.which == '27') {
+            formModal.removeClass('is-visible');
+        }
+    });
 
-	//show forgot-password form 
-	forgotPasswordLink.on('click', function(event){
-		event.preventDefault();
-		forgot_password_selected();
-	});
+    //switch from a tab to another
+    formModalTab.on('click', function (event) {
+        event.preventDefault();
+        ( $(event.target).is(tabLogin) ) ? login_selected() : signup_selected();
+    });
 
-	//back to login from the forgot-password form
-	backToLoginLink.on('click', function(event){
-		event.preventDefault();
-		login_selected();
-	});
+    //hide or show password
+    $('.hide-password').on('click', function () {
+        var togglePass = $(this),
+            passwordField = togglePass.prev('input');
 
-	function login_selected(){
-		mainNav.children('ul').removeClass('is-visible');
-		formModal.addClass('is-visible');
-		formLogin.addClass('is-selected');
-		formSignup.removeClass('is-selected');
-		formForgotPassword.removeClass('is-selected');
-		tabLogin.addClass('selected');
-		tabSignup.removeClass('selected');
-	}
+        ( 'password' == passwordField.attr('type') ) ? passwordField.attr('type', 'text') : passwordField.attr('type', 'password');
+        ( 'Hide' == togglePass.text() ) ? togglePass.text('Show') : togglePass.text('Hide');
+        //focus and move cursor to the end of input field
+        passwordField.putCursorAtEnd();
+    });
 
-	function signup_selected(){
-		mainNav.children('ul').removeClass('is-visible');
-		formModal.addClass('is-visible');
-		formLogin.removeClass('is-selected');
-		formSignup.addClass('is-selected');
-		formForgotPassword.removeClass('is-selected');
-		tabLogin.removeClass('selected');
-		tabSignup.addClass('selected');
-	}
+    //show forgot-password form
+    forgotPasswordLink.on('click', function (event) {
+        event.preventDefault();
+        forgot_password_selected();
+    });
 
-	function forgot_password_selected(){
-		formLogin.removeClass('is-selected');
-		formSignup.removeClass('is-selected');
-		formForgotPassword.addClass('is-selected');
-	}
+    //back to login from the forgot-password form
+    backToLoginLink.on('click', function (event) {
+        event.preventDefault();
+        login_selected();
+    });
 
-	//REMOVE THIS - it's just to show error messages 
-	formLogin.find('input[type="submit"]').on('click', function(event){
-		event.preventDefault();
-		// formLogin.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-		alert("Congrats!");
-	});
-	formSignup.find('input[type="submit"]').on('click', function(event){
-		event.preventDefault();
-		formSignup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-	});
+    function login_selected() {
+        mainNav.children('ul').removeClass('is-visible');
+        formModal.addClass('is-visible');
+        formLogin.addClass('is-selected');
+        formSignup.removeClass('is-selected');
+        formForgotPassword.removeClass('is-selected');
+        tabLogin.addClass('selected');
+        tabSignup.removeClass('selected');
+    }
+
+    function signup_selected() {
+        mainNav.children('ul').removeClass('is-visible');
+        formModal.addClass('is-visible');
+        formLogin.removeClass('is-selected');
+        formSignup.addClass('is-selected');
+        formForgotPassword.removeClass('is-selected');
+        tabLogin.removeClass('selected');
+        tabSignup.addClass('selected');
+    }
+
+    function forgot_password_selected() {
+        formLogin.removeClass('is-selected');
+        formSignup.removeClass('is-selected');
+        formForgotPassword.addClass('is-selected');
+    }
+
+    //REMOVE THIS - it's just to show error messages
+    formLogin.find('input[type="submit"]').on('click', function (event) {
+        event.preventDefault();
+        // formLogin.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+        alert("Congrats!");
+    });
+    formSignup.find('input[type="submit"]').on('click', function (event) {
+        event.preventDefault();
+        formSignup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+    });
 
 
-	//IE9 placeholder fallback
-	//credits http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
-	if(!Modernizr.input.placeholder){
-		$('[placeholder]').focus(function() {
-			var input = $(this);
-			if (input.val() == input.attr('placeholder')) {
-				input.val('');
-		  	}
-		}).blur(function() {
-		 	var input = $(this);
-		  	if (input.val() == '' || input.val() == input.attr('placeholder')) {
-				input.val(input.attr('placeholder'));
-		  	}
-		}).blur();
-		$('[placeholder]').parents('form').submit(function() {
-		  	$(this).find('[placeholder]').each(function() {
-				var input = $(this);
-				if (input.val() == input.attr('placeholder')) {
-			 		input.val('');
-				}
-		  	})
-		});
-	}
+    //IE9 placeholder fallback
+    //credits http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
+    if (!Modernizr.input.placeholder) {
+        $('[placeholder]').focus(function () {
+            var input = $(this);
+            if (input.val() == input.attr('placeholder')) {
+                input.val('');
+            }
+        }).blur(function () {
+            var input = $(this);
+            if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                input.val(input.attr('placeholder'));
+            }
+        }).blur();
+        $('[placeholder]').parents('form').submit(function () {
+            $(this).find('[placeholder]').each(function () {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                }
+            })
+        });
+    }
 
 });
 
 //credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
-jQuery.fn.putCursorAtEnd = function() {
-	return this.each(function() {
-    	// If this function exists...
-    	if (this.setSelectionRange) {
-      		// ... then use it (Doesn't work in IE)
-      		// Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
-      		var len = $(this).val().length * 2;
-      		this.focus();
-      		this.setSelectionRange(len, len);
-    	} else {
-    		// ... otherwise replace the contents with itself
-    		// (Doesn't work in Google Chrome)
-      		$(this).val($(this).val());
-    	}
-	});
+jQuery.fn.putCursorAtEnd = function () {
+    return this.each(function () {
+        // If this function exists...
+        if (this.setSelectionRange) {
+            // ... then use it (Doesn't work in IE)
+            // Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
+            var len = $(this).val().length * 2;
+            this.focus();
+            this.setSelectionRange(len, len);
+        } else {
+            // ... otherwise replace the contents with itself
+            // (Doesn't work in Google Chrome)
+            $(this).val($(this).val());
+        }
+    });
 };
