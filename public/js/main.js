@@ -556,14 +556,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(window).keyup(function (event) {
-        if (event.keyCode == 27) {
-            objSchedulesPlan.forEach(function (element) {
-                element.closeModal(element.eventsGroup.find('.selected-event'));
-            });
-        }
-    });
-
     function checkResize() {
         objSchedulesPlan.forEach(function (element) {
             element.scheduleReset();
@@ -718,7 +710,14 @@ jQuery(document).ready(function ($) {
     //close popup when clicking the esc keyboard button
     $(document).keyup(function(event){
         if(event.which=='27'){
-            $('.cd-popup').removeClass('is-visible');
+            if ($('.cd-popup').hasClass('is-visible')) {
+                $('.cd-popup').removeClass('is-visible');
+            } else {
+                objSchedulesPlan.forEach(function (element) {
+                    element.closeModal(element.eventsGroup.find('.selected-event'));
+                });
+            }
+
         }
     });
 
