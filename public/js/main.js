@@ -717,7 +717,6 @@ jQuery(document).ready(function ($) {
                     element.closeModal(element.eventsGroup.find('.selected-event'));
                 });
             }
-
         }
     });
 
