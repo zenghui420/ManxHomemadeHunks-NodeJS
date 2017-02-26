@@ -260,6 +260,25 @@ jQuery(document).ready(function($){
         this.modalHeader.find('.event-date').text(event.find('.event-date').text());
         this.modal.attr('data-event', event.parent().attr('data-event'));
 
+        var controlGroup = this.modalBody.find('.control-group')[0];
+        var groupLabel = document.createElement('label');
+        var groupInput = document.createElement('input');
+        var groupDiv = document.createElement('div');
+        var labelName = document.createTextNode('Test Radio');
+
+        groupLabel.setAttribute('class','control control--radio');
+
+        groupInput.setAttribute('type','radio');
+        groupInput.setAttribute('name','radio');
+
+        groupDiv.setAttribute('class','control__indicator');
+
+        groupLabel.appendChild(labelName);
+        groupLabel.appendChild(groupInput);
+        groupLabel.appendChild(groupDiv);
+        controlGroup.appendChild(groupLabel);
+        console.log('hello');
+
         // update event content
         // var url = 'ftp://zenghui420:mzh-67666526@45.76.100.30/files/';
 
