@@ -9,7 +9,6 @@ jQuery(document).ready(function($){
 		forgotPasswordLink = formLogin.find('.cd-form-bottom-message a'),
 		backToLoginLink = formForgotPassword.find('.cd-form-bottom-message a'),
 		mainNav = $('.main-nav');
-	var eventsNum = ['event-1','event-2','event-3','event-4'];
 
 	var eventsNum = ['event-1','event-2','event-3','event-4'];
 
@@ -30,7 +29,7 @@ jQuery(document).ready(function($){
         tabItems.on('click', 'a', function(event){
             event.preventDefault();
             var selectedItem = $(this);
-            var socket = io.connect('http://45.76.100.30:2046');
+            var socket = io.connect('http://localhost:2046');
 
             var selectedTab = selectedItem.data('content'),
                 selectedSchedule = tabContentWrapper.find('.cd-schedule');
@@ -264,15 +263,16 @@ jQuery(document).ready(function($){
         // update event content
         // var url = 'ftp://zenghui420:mzh-67666526@45.76.100.30/files/';
 
-        this.modalBody.find('.event-info').load(event.parent().attr('data-content')+'.html .event-info > *', function(response, status, xhr){
-            //once the event content has been loaded
-            if (status == 'error') {
-                alert(xhr.statusText);
-            } else {
-                self.element.addClass('content-loaded');
-            }
-        });
+        // this.modalBody.find('.event-info').load(event.parent().attr('data-content')+'.html .event-info > *', function(response, status, xhr){
+        //     //once the event content has been loaded
+        //     if (status == 'error') {
+        //         alert(xhr.statusText);
+        //     } else {
+        //         self.element.addClass('content-loaded');
+        //     }
+        // });
 
+        self.element.addClass('content-loaded');
         this.element.addClass('modal-is-open');
 
         setTimeout(function(){
