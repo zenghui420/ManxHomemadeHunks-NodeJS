@@ -114,8 +114,8 @@ header[role=banner] #cd-logo {
 }
 
 /*.logo-content a span {*/
-    /*font-size: 1.4rem;*/
-    /*color: #a6a6a6;*/
+/*font-size: 1.4rem;*/
+/*color: #a6a6a6;*/
 /*}*/
 
 header[role=banner]::after {
@@ -1643,19 +1643,19 @@ xsigin/signup popup
 }
 
 /*@media only screen and (min-width: 768px) {*/
-    /*.cd-popup-trigger {*/
-        /*position: fixed;*/
-        /*right: 70px;*/
-        /*bottom: -150px;*/
-    /*}*/
+/*.cd-popup-trigger {*/
+/*position: fixed;*/
+/*right: 70px;*/
+/*bottom: -150px;*/
+/*}*/
 /*}*/
 
 /*@media only screen and (min-width: 960px) {*/
-    /*.cd-popup-trigger {*/
-        /*position: fixed;*/
-        /*right: 40px;*/
-        /*bottom: -50px;*/
-    /*}*/
+/*.cd-popup-trigger {*/
+/*position: fixed;*/
+/*right: 40px;*/
+/*bottom: -50px;*/
+/*}*/
 /*}*/
 
 @media only screen and (min-width: 1170px) {
