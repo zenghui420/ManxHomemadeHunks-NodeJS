@@ -85,19 +85,20 @@ header[role=banner] #cd-logo {
 }
 
 .logo-content a {
-    font-size: 2rem;
     text-align: center;
     padding-top: 10px;
 }
 
-.logo-content a::before {
+.logo-content a::after {
     /* icon on the left */
     content: '';
+    clear: both;
+    display: table;
     display: inline-block;
     float: left;
-    height: 43px;
-    width: 43px;
-    margin: 0 .6em 0 0;
+    height: 42px;
+    width: 42px;
+    /*margin: 0 5px 0 0;*/
     background: #D85269;
     border-radius: 50%;
     -webkit-transition: background .2s;
@@ -105,11 +106,10 @@ header[role=banner] #cd-logo {
 }
 
 .logo-content a em {
-    font-size: 2rem;
-    /*padding: 20px 0;*/
+    font-size: 20px;
     color: #2f889a;
     position: fixed;
-    top: 6px;
+    top: 22.5%;
     left: 50px;
 }
 
@@ -132,25 +132,30 @@ header[role=banner]::after {
 
     header[role=banner] #cd-logo {
         float: right;
-        margin: 10px 175px 0 0;
+        margin: 10px 200px 0 0;
         -moz-transform: scale(1);
         -ms-transform: scale(1);
         -o-transform: scale(1);
         transform: scale(1);
     }
 
-    .logo-content a::before {
+    .logo-content a::after {
         height: 54px;
         width: 54px;
-        margin: 5% .6em 0 0;
+        /*margin: 5% .6em 0 0;*/
         border-radius: 50%;
+        content: "";
+        clear: both;
+        display: table;
     }
 
     .logo-content a em {
-        font-size: 2rem;
+        font-size: 25px;
         position: fixed;
-        top: 17px;
+        top: 25%;
         left: 60px;
+        /*margin-left: 10px;*/
+        /*margin-top: 5px;*/
     }
 }
 
